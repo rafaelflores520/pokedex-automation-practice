@@ -1,11 +1,11 @@
 interface Type {
   name: string;
-  url: string;
+  url?: string;
 }
 
 interface Ability {
   name: string;
-  url: string;
+  url?: string;
   isHidden: boolean;
 }
 
