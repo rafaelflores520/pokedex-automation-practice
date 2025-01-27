@@ -48,10 +48,10 @@ test("Verificar el/los tipos del Pokemon", async ({ pokemonDetails }) => {
   await expect(pokemonDetails.findPokeType).toBeVisible();
 });
 
-// test("Verificar las habilidades del pokemon", async ({ pokemonDetails }) => {
-//   const abilities = await pokemonDetails.pokeAbilities;
-//   console.log(abilities.length);
-//   for (let i = 0; i < abilities.length; i++) {
-//     await expect(abilities[i]).toHaveText(mockData.abilities[i].name);
-//   }
-// });
+test("Verificar las habilidades del pokemon", async ({ pokemonDetails }) => {
+  const abilities = await pokemonDetails.pokeAbilities;
+  console.log(abilities.length);
+  for (let i = 0; i < abilities.length; i++) {
+    await expect(abilities[i]).toContainText(mockData.abilities[i].name);
+  }
+});
