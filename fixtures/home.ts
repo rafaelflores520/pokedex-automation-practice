@@ -9,7 +9,7 @@ export class Home {
   }
 
   async goto() {
-    await this.page.goto("https://pokemondb.net/");
+    await this.page.goto("/");
   }
 
   async search(pokeName: string, pokeType: string = "") {

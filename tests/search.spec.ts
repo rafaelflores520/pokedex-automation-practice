@@ -9,7 +9,7 @@ const test = Base.extend<{ home: Home }>({
   },
 });
 
-test("Buscar un pokemon", async ({ home }) => {
+test("Buscar un pokemon", { tag: "@AssertPokemon" }, async ({ home }) => {
   await home.search("Charizard", "Pokedex");
   expect(home.getSearchElement()).toBeVisible();
   await home.gotToResult();
