@@ -15,43 +15,24 @@ const mockData: Pokemon = {
 const test = Base.extend<{ pokemonDetails: PokemonDetails }>({
   pokemonDetails: async ({ page }, use) => {
     //Mockdata is temporal, ideally want to use an API calll to pokeApi
-    const pokemonDetails = new PokemonDetails(page, mockData);
-    await page.goto(`pokedex/${mockData.name.toLocaleLowerCase()}`, {
-      waitUntil: "domcontentloaded",
-    });
+    const pokemonDetails = new PokemonDetails(page);
+    await pokemonDetails.goTo(mockData.name);
     use(pokemonDetails);
   },
 });
 
-test(
-  "Verificar el nombre del Pokemon",
-  { tag: "@AssertPokemon" },
-  async ({ pokemonDetails }) => {
-    await expect(pokemonDetails.findPokeTitle).toBeVisible();
-  }
-);
+test("Verificar el nombre del Pokemon", async ({ pokemonDetails }) => {
+  await pokemonDetails.expectPokeTitleDisplayed(mockData.name);
+});
 
-test(
-  "Verificar el id Nacional",
-  { tag: "@AssertPokemon" },
-  async ({ pokemonDetails }) => {
-    const nationalIdText = await pokemonDetails.pokeNationalId.textContent();
-    if (nationalIdText !== null) {
-      await expect(Number.parseInt(nationalIdText)).toEqual(mockData.id);
-    } else {
-      throw new Error("National ID text content is null");
-    }
-  }
-);
+test("Verificar el id Nacional", async ({ pokemonDetails }) => {
+  pokemonDetails.expectNationalIdToMatch(mockData.id);
+});
 
 test("Verificar el/los tipos del Pokemon", async ({ pokemonDetails }) => {
-  await expect(pokemonDetails.findPokeType).toBeVisible();
+  await pokemonDetails.expectPokeTypeToMatch(mockData.type);
 });
 
 test("Verificar las habilidades del pokemon", async ({ pokemonDetails }) => {
-  const abilities = await pokemonDetails.pokeAbilities;
-  console.log(abilities.length);
-  for (let i = 0; i < abilities.length; i++) {
-    await expect(abilities[i]).toContainText(mockData.abilities[i].name);
-  }
+  const abilities = await pokemonDetails.expectPokeAbilitiesToMatch;
 });
