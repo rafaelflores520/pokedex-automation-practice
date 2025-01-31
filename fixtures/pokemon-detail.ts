@@ -5,10 +5,8 @@ export class PokemonDetails {
   private readonly _pokeImage: RegExp;
   private readonly _pokeType: string;
   private readonly _pokeName: string;
-  private readonly _pokePath: string;
 
   constructor(readonly page: Page, pokeInfo: Pokemon) {
-    this._pokePath = `pokedex/${pokeInfo.name}`;
     this._pokeName = pokeInfo.name;
     this._pokeImage = new RegExp(
       String.raw`${pokeInfo.name}.+Ken Sugimori`,
@@ -21,26 +19,24 @@ export class PokemonDetails {
       .join(" ")}`;
   }
 
-  get pokePath() {
-    return this._pokePath;
+  get pokeNationalId() {
+    return this.page
+      .getByRole("row", { name: /National/ })
+      .getByRole("cell", { name: /\d+/ });
   }
 
-  //   get pokeNationalId(){
-  //     return this.page.get
-  //   }
-
-  get pokeTitle() {
+  get findPokeTitle() {
     return this.page.getByRole("heading", {
       name: this._pokeName,
       exact: true,
     });
   }
 
-  get pokeType() {
+  get findPokeType() {
     return this.page.getByRole("row", { name: this._pokeType });
   }
 
-  get pokeImage() {
+  get findPokeImage() {
     return this.page.getByRole("img", { name: this._pokeImage });
   }
 
