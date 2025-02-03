@@ -1,5 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 
+//Implement MinimalPage interface
 export class Home {
   private readonly SearchBar: Locator;
   private SearchElement: Locator;

@@ -1,6 +1,5 @@
 import { expect, Page } from "@playwright/test";
 import { MinimalPage } from "../Interfaces/page";
-import exp from "constants";
 
 export class MoveDetails implements MinimalPage {
   constructor(private readonly page: Page) {}
@@ -30,5 +29,14 @@ export class MoveDetails implements MinimalPage {
     ).toHaveText(moveType.name, {
       ignoreCase: true,
     });
+  }
+
+  public async expectPokemomnsToLearnMove(pokemons: Array<PokemonSummary>) {
+    const fetchedPokemons = await this.page.locator(".ent-name");
+    await expect(fetchedPokemons).toHaveText(
+      pokemons.map((poke) => {
+        return poke.name;
+      })
+    );
   }
 }

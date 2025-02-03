@@ -43,6 +43,7 @@ export class PokemonDetails implements MinimalPage {
     await expect(fetchedImage).toBeVisible();
   }
 
+  //Refactor to utilize toContainText() feature to assert multiple locators
   public async expectPokeAbilitiesToMatch(pokeAbilities) {
     const fetchedAbilities = await this.page
       .getByRole("row", { name: /Abilities/ })
