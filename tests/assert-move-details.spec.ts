@@ -1,59 +1,6 @@
 import { test as Base } from "@playwright/test";
 import { MoveDetails } from "../fixtures/move-details";
-
-const mockMove: Move = {
-  name: "Attract",
-  type: {
-    name: "normal",
-  },
-  pokemonWithMove: [
-    {
-      name: "Milotic",
-    },
-    {
-      name: "Luvdisc",
-    },
-    {
-      name: "Finneon",
-    },
-    {
-      name: "Lumineon",
-    },
-    {
-      name: "Vullaby",
-    },
-    {
-      name: "Mandibuzz",
-    },
-    {
-      name: "Milcery",
-    },
-    {
-      name: "Alcremie",
-    },
-    {
-      name: "Frosmoth",
-    },
-    {
-      name: "Fezandipiti",
-    },
-    {
-      name: "Illumise",
-    },
-    {
-      name: "Oricorio",
-    },
-    {
-      name: "Oricorio",
-    },
-    {
-      name: "Oricorio",
-    },
-    {
-      name: "Oricorio",
-    },
-  ],
-};
+import { mockMove } from "../utils/mockData";
 
 const test = Base.extend<{ moveDetails: MoveDetails }>({
   moveDetails: async ({ page }, use) => {
