@@ -1,38 +1,32 @@
 import { test as Base, expect } from "@playwright/test";
 import { PokemonDetails } from "../fixtures/pokemon-detail";
+import { getPokemon } from "../utils/pokeApi";
 
-const mockData: Pokemon = {
-  name: "Kommo-o",
-  id: 784,
-  type: [{ name: "Dragon" }, { name: "Fighting" }],
-  abilities: [
-    { name: "Bulletproof", isHidden: false },
-    { name: "Soundproof", isHidden: false },
-    { name: "Overcoat", isHidden: true },
-  ],
-};
+let pokemon: Pokemon;
 
 const test = Base.extend<{ pokemonDetails: PokemonDetails }>({
   pokemonDetails: async ({ page }, use) => {
-    //Mockdata is temporal, ideally want to use an API calll to pokeApi
+    //Need to Clarify the required test data
+    pokemon = await getPokemon("Kommo-o");
+    console.log(pokemon);
     const pokemonDetails = new PokemonDetails(page);
-    await pokemonDetails.goTo(mockData.name);
+    await pokemonDetails.goTo(pokemon.name);
     use(pokemonDetails);
   },
 });
 
 test("Verificar el nombre del Pokemon", async ({ pokemonDetails }) => {
-  await pokemonDetails.expectPokeTitleDisplayed(mockData.name);
+  await pokemonDetails.expectPokeTitleDisplayed(pokemon.name);
 });
 
 test("Verificar el id Nacional", async ({ pokemonDetails }) => {
-  await pokemonDetails.expectNationalIdToMatch(mockData.id);
+  await pokemonDetails.expectNationalIdToMatch(pokemon.id);
 });
 
 test("Verificar el/los tipos del Pokemon", async ({ pokemonDetails }) => {
-  await pokemonDetails.expectPokeTypeToMatch(mockData.type);
+  await pokemonDetails.expectPokeTypeToMatch(pokemon.type);
 });
 
 test("Verificar las habilidades del pokemon", async ({ pokemonDetails }) => {
-  await pokemonDetails.expectPokeAbilitiesToMatch(mockData.abilities);
+  await pokemonDetails.expectPokeAbilitiesToMatch(pokemon.abilities);
 });

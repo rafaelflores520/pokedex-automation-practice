@@ -20,8 +20,8 @@ export class PokemonDetails implements MinimalPage {
 
   public async expectPokeTitleDisplayed(pokeName: string) {
     const fetchedName = await this.page.getByRole("heading", {
-      name: pokeName,
-      exact: true,
+      name: new RegExp(pokeName, "i"),
+      level: 1,
     });
     await expect(fetchedName).toBeVisible();
   }
@@ -32,7 +32,9 @@ export class PokemonDetails implements MinimalPage {
       .getByRole("link")
       .all();
     for (let i = 0; i < fetchedTypes.length; i++) {
-      await expect(fetchedTypes[i]).toContainText(pokeTypes[i].name);
+      await expect(fetchedTypes[i]).toContainText(pokeTypes[i].name, {
+        ignoreCase: true,
+      });
     }
   }
 
@@ -44,13 +46,15 @@ export class PokemonDetails implements MinimalPage {
   }
 
   //Refactor to utilize toContainText() feature to assert multiple locators
-  public async expectPokeAbilitiesToMatch(pokeAbilities) {
+  public async expectPokeAbilitiesToMatch(pokeAbilities: Array<PokeAbility>) {
     const fetchedAbilities = await this.page
       .getByRole("row", { name: /Abilities/ })
-      .locator(".text-muted")
-      .all();
-    for (let i = 0; i < fetchedAbilities.length; i++) {
-      await expect(fetchedAbilities[i]).toContainText(pokeAbilities[i].name);
-    }
+      .locator(".text-muted");
+    await expect(fetchedAbilities).toContainText(
+      pokeAbilities.map<string>((elem) => {
+        return elem.name;
+      }),
+      { ignoreCase: true }
+    );
   }
 }

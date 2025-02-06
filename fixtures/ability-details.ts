@@ -14,7 +14,9 @@ export class AbilityDetails implements MinimalPage {
     const fetchedTitle = this.page.getByRole("heading").filter({
       has: this.page.locator(".text-muted", { hasText: "(ability)" }),
     });
-    await expect(fetchedTitle).toContainText(abilityName);
+    await expect(fetchedTitle).toContainText(abilityName.replace("-", " "), {
+      ignoreCase: true,
+    });
   }
 
   public async expectPokemonToHaveAbility(
@@ -37,7 +39,7 @@ export class AbilityDetails implements MinimalPage {
         hidden ? "Hidden" : "Normal"
       } ability to exist`
     ).toContainText(
-      pokemonsWithAbility.map((elem) => elem.pokemon.name),
+      pokemonsWithAbility.map<string>((elem) => elem.pokemon.name),
       { ignoreCase: true }
     );
   }
